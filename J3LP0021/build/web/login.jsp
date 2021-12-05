@@ -1,9 +1,11 @@
+<%-- 
+    Document   : login
+    Created on : Dec 5, 2021, 4:08:32 PM
+    Author     : anhnd
+--%>
+
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
-<!--
-To change this license header, choose License Headers in Project Properties.
-To change this template file, choose Tools | Templates
-and open the template in the editor.
--->
 <html>
     <head>
         <title>Login</title>
@@ -34,6 +36,7 @@ and open the template in the editor.
                 </tbody>
             </table>
             </br>
+            
         </form>
     </body>
 </html>

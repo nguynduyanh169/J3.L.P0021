@@ -1,35 +1,37 @@
+package anhnd.servlets;
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package anhnd.servlets;
-
+import anhnd.daos.BookingDetailDAO;
+import anhnd.daos.HotelDAO;
+import anhnd.daos.HotelRoomDAO;
+import anhnd.daos.RoomTypeDAO;
+import anhnd.dtos.HotelDTO;
+import anhnd.dtos.HotelRoomDTO;
+import anhnd.dtos.RoomTypeDTO;
+import anhnd.dtos.RoomView;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.Date;
+import java.util.ArrayList;
+import java.util.List;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *
  * @author anhnd
  */
-public class ProcessServlet extends HttpServlet {
+public class GetRoomsServlet extends HttpServlet {
 
-    private static final String HOME_PAGE = "home.jsp";
-    private static final String LOAD_HOME = "LoadHomeServlet";
-    private static final String CART = "CartServlet";
-    private static final String REGISTER = "RegisterServlet";
-    private static final String EDIT_CAKE = "EditCakeServlet";
-    private static final String GET_ROOMS = "GetRoomsServlet";
-    private static final String LOGIN_GOOGLE = "LoginGoogleServlet";
-    private static final String LOGIN = "LoginServlet";
-    private static final String LOGOUT = "LogoutServlet";
-    private static final String SEARCH_HOTEL = "SearchHotelServlet";
-    private static final String UPDATE_CAKE = "UpdateCakeServlet";
+    private static final String VIEW_ROOM_PAGE = "guest_view_room.jsp";
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -44,51 +46,35 @@ public class ProcessServlet extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
-        String url = HOME_PAGE;
+        String hotelId = request.getParameter("hotelId");
+        String selectQuantity = request.getParameter("selectQuantity");
+        String checkIn = request.getParameter("checkIn");
+        String checkOut = request.getParameter("checkOut");
         try {
-            String button = request.getParameter("btAction");
-            if (button == null) {
-
-            } else if (button.equals("Login")) {
-                url = LOGIN;
-            } else if (button.equals("Logout")) {
-                url = LOGOUT;
-            } else if (button.equals("Register")) {
-                url = REGISTER;
-            } else if (button.equals("Edit Cake")) {
-                url = EDIT_CAKE;
-            } else if (button.equals("Update Cake")) {
-                url = UPDATE_CAKE;
-            } else if (button.equals("Get Rooms")) {
-                url = GET_ROOMS;
-            } else if (button.equals("LoadHome")) {
-                url = LOAD_HOME;
-            } else if (button.equals("Search Hotel")) {
-                url = SEARCH_HOTEL;
-            } else if (button.equals("GoogleLogin")) {
-                url = LOGIN_GOOGLE;
-            } else if (button.equals("Remove_Cart")) {
-                url = CART;
-            } else if (button.equals("Guest_Order")) {
-                url = CART;
-            } else if (button.equals("Guest_View_Cart")) {
-                url = CART;
-            } else if (button.equals("Guest_Add_To_Cart")) {
-                url = CART;
-            } else if (button.equals("Add_To_Cart")) {
-                url = CART;
-            } else if (button.equals("Update_Cart")) {
-                url = CART;
-            } else if (button.equals("View_Cart")) {
-                url = CART;
-            } else if (button.equals("Confirm_Order")) {
-                url = CART;
-            } else if (button.equals("Order")) {
-                url = CART;
+            HttpSession session = request.getSession();
+            HotelDAO hotelDAO = new HotelDAO();
+            RoomTypeDAO roomTypeDAO = new RoomTypeDAO();
+            HotelRoomDAO hotelRoomDAO = new HotelRoomDAO();
+            BookingDetailDAO bookingDetailDAO = new BookingDetailDAO();
+            List<HotelRoomDTO> roomsByHotel = hotelRoomDAO.getHotelRooms(hotelId, Integer.parseInt(selectQuantity));
+            List<RoomView> availableRooms = new ArrayList<>();
+            if (!roomsByHotel.isEmpty()) {              
+                for (HotelRoomDTO hotelRoomDTO : roomsByHotel) {
+                    int actualQuantity = bookingDetailDAO.getQuantityOfBookedRoom(hotelRoomDTO.getHotelRoomId(), Date.valueOf(checkIn), Date.valueOf(checkOut), hotelRoomDTO.getQuantity());
+                    if (actualQuantity > Integer.parseInt(selectQuantity)) {
+                        RoomTypeDTO roomTypeDTO = roomTypeDAO.getRoomTypeById(hotelRoomDTO.getRoomTypeId());
+                        RoomView roomView = new RoomView(hotelRoomDTO, actualQuantity, roomTypeDTO);
+                        availableRooms.add(roomView);
+                    }
+                }
             }
-
+            HotelDTO selectedHotel = hotelDAO.GetHotelById(hotelId);
+            session.setAttribute("HOTEL", selectedHotel);
+            session.setAttribute("HOTELROOMS", availableRooms);
+        } catch (Exception e) {
+            e.printStackTrace();
         } finally {
-            RequestDispatcher rd = request.getRequestDispatcher(url);
+            RequestDispatcher rd = request.getRequestDispatcher(VIEW_ROOM_PAGE);
             rd.forward(request, response);
             out.close();
         }

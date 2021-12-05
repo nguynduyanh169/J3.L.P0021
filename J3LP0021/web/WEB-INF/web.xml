@@ -12,6 +12,18 @@
         <servlet-name>RegisterServlet</servlet-name>
         <servlet-class>anhnd.servlets.RegisterServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>SearchHotelServlet</servlet-name>
+        <servlet-class>anhnd.servlets.SearchHotelServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>GetRoomsServlet</servlet-name>
+        <servlet-class>anhnd.servlets.GetRoomsServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>LoadHomeServlet</servlet-name>
+        <servlet-class>anhnd.servlets.LoadHomeServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>LoginServlet</servlet-name>
         <url-pattern>/LoginServlet</url-pattern>
@@ -24,12 +36,22 @@
         <servlet-name>RegisterServlet</servlet-name>
         <url-pattern>/RegisterServlet</url-pattern>
     </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>SearchHotelServlet</servlet-name>
+        <url-pattern>/SearchHotelServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>GetRoomsServlet</servlet-name>
+        <url-pattern>/GetRoomsServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>LoadHomeServlet</servlet-name>
+        <url-pattern>/</url-pattern>
+    </servlet-mapping>
     <session-config>
         <session-timeout>
             30
         </session-timeout>
     </session-config>
-    <welcome-file-list>
-        <welcome-file>home.jsp</welcome-file>
-    </welcome-file-list>
+    
 </web-app>
