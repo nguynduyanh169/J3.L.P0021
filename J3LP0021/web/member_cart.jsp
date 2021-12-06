@@ -1,6 +1,6 @@
 <%-- 
-    Document   : user_home
-    Created on : Dec 3, 2021, 8:01:05 PM
+    Document   : member_cart
+    Created on : Dec 6, 2021, 9:01:12 AM
     Author     : anhnd
 --%>
 
@@ -9,7 +9,7 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Home Page</title>
+        <title>JSP Page</title>
     </head>
     <body>
         <h1>Hello World!</h1>

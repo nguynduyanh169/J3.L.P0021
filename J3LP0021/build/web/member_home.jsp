@@ -1,16 +1,17 @@
 <%-- 
-    Document   : home.jsp
-    Created on : Dec 3, 2021, 7:51:18 PM
+    Document   : member_home
+    Created on : Dec 6, 2021, 7:54:43 AM
     Author     : anhnd
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+
 <!DOCTYPE html>
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Guest Home Page</title>
+        <title>Member Home Page</title>
         <style>
             .container {
                 display: flex;
@@ -21,18 +22,18 @@
         </style>
     </head>
     <body>
-        <a href="login.jsp">Go to login page</a>
         <c:set var="hotels" value="${sessionScope.HOTELS}" />
         <c:set var="areas" value="${sessionScope.AREAS}"/>
+        <c:set  var="account" value="${sessionScope.ACCOUNT}"/>
         <div class="container">
-            <h1>Welcome Guest!</h1>
+            <h1>Welcome ${account.fullName}!</h1>
             <br/>
             <form action="ProcessServlet" method="GET">
                 <table border="0">
                     <tbody>
                         <tr>
                             <td>Hotel Name: </td>
-                            <td><input type="hidden" name="forwardTo" value="guest"/><input type="text" name="txtSearchName" value="${param.txtSearchName}"/></td>
+                            <td><input type="hidden" name="forwardTo" value="member"/><input type="text" name="txtSearchName" value="${param.txtSearchName}"/></td>
                         </tr>
                         <tr>
                             <td>Area: </td>
@@ -87,7 +88,7 @@
                                         <c:param name="selectQuantity" value="${param.txtAmount}"/>
                                         <c:param name="checkIn" value="${param.txtCheckIn}"/>
                                         <c:param name="checkOut" value="${param.txtCheckOut}"/>
-                                        <c:param name="forwardTo" value="guest"/>
+                                        <c:param name="forwardTo" value="member"/>
                                         <c:param name="btAction" value="Get Rooms"/>
                                     </c:url>
                                     <a href="${viewRoomsLink}">View Rooms</a>
@@ -102,5 +103,5 @@
             </c:if>
         </div>
     </div>
-</body>
+    </body>
 </html>

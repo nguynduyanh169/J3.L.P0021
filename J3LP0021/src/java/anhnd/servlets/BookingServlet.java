@@ -5,17 +5,12 @@
  */
 package anhnd.servlets;
 
-import anhnd.daos.BookingDetailDAO;
-import anhnd.daos.HotelDAO;
-import anhnd.daos.HotelRoomDAO;
-import anhnd.dtos.HotelDTO;
-import anhnd.dtos.HotelRoomDTO;
+import anhnd.beans.BookingBean;
+import anhnd.daos.BookingModel;
+import anhnd.utils.CartUtils;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Date;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -27,9 +22,11 @@ import javax.servlet.http.HttpSession;
  *
  * @author anhnd
  */
-public class SearchHotelServlet extends HttpServlet {
- private static final String MEMBER_SEARCH_HOTEL = "member_home.jsp";
-    private static final String GUEST_SEARCH_HOTEL = "home.jsp";
+public class BookingServlet extends HttpServlet {
+
+    private static final String MEMBER_VIEW_ROOM = "member_view_room.jsp";
+    private static final String MEMBER_CART = "member_cart.jsp";
+
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -43,40 +40,33 @@ public class SearchHotelServlet extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
-        String searchName = request.getParameter("txtSearchName");
-        String checkIn = request.getParameter("txtCheckIn");
-        String checkOut = request.getParameter("txtCheckOut");
-        String area = request.getParameter("areaChoice");
-        String selectQuantity = request.getParameter("txtAmount");
-        String forwardTo = request.getParameter("forwardTo");
-        String url = GUEST_SEARCH_HOTEL;
-        if(forwardTo.equals("member")){
-            url = MEMBER_SEARCH_HOTEL;
-        }
+        String action = request.getParameter("btAction");
         try {
-            HttpSession session = request.getSession();
-            HotelDAO hotelDAO = new HotelDAO();
-            HotelRoomDAO hotelRoomDAO = new HotelRoomDAO();
-            BookingDetailDAO bookingDetailDAO = new BookingDetailDAO();
-            Set<HotelDTO> availableHotels = new HashSet<>();
-            List<HotelDTO> hotels = hotelDAO.getHotels(searchName, area);
-            for (HotelDTO hotel : hotels) {
-                List<HotelRoomDTO> roomsByHotel = hotelRoomDAO.getHotelRooms(hotel.getHotelId(), Integer.parseInt(selectQuantity));
-                if (!roomsByHotel.isEmpty()) {
-                    for (HotelRoomDTO hotelRoomDTO : roomsByHotel) {
-                        int actualQuantity = bookingDetailDAO.getQuantityOfBookedRoom(hotelRoomDTO.getHotelRoomId(), Date.valueOf(checkIn), Date.valueOf(checkOut), hotelRoomDTO.getQuantity());
-                        if (actualQuantity > Integer.parseInt(selectQuantity)) {
-                            availableHotels.add(hotel);
-                        }
-                    }
+            if (action.equals("Add to cart")) {
+                HttpSession session = request.getSession(true);
+                BookingBean shop = (BookingBean) session.getAttribute("SHOP");
+                if (shop == null) {
+                    shop = new BookingBean();
                 }
+                String roomId = request.getParameter("roomId");
+                String availableQuantity = request.getParameter("availableQuantity");
+                String priceText = request.getParameter("price");
+                String checkIn = request.getParameter("checkIn");
+                String checkOut = request.getParameter("checkOut");
+                String url = MEMBER_VIEW_ROOM;
+                float price = Float.parseFloat(priceText);
+                BookingModel bookingModel = new BookingModel(roomId, Integer.parseInt(availableQuantity), price, price * CartUtils.getDifferenceDays(Date.valueOf(checkIn), Date.valueOf(checkOut)), Date.valueOf(checkIn), Date.valueOf(checkOut));
+                shop.addBooking(bookingModel);
+                session.setAttribute("SHOP", shop);
+                for (BookingModel value : shop.values()) {
+                    System.out.println(value.toString());
+                }
+                RequestDispatcher rd = request.getRequestDispatcher(url);
+                rd.forward(request, response);
             }
-            session.setAttribute("HOTELS", availableHotels);
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            RequestDispatcher rd = request.getRequestDispatcher(url);
-            rd.forward(request, response);
             out.close();
         }
     }

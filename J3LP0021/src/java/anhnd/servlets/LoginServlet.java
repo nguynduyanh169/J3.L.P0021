@@ -22,7 +22,7 @@ import javax.servlet.http.HttpSession;
  */
 public class LoginServlet extends HttpServlet {
 
-    private static final String SEARCH_HOTEL = "user_home.jsp";
+    private static final String MEMBER_SEARCH_HOTEL = "member_home.jsp";
     private static final String INVALID_PAGE = "invalid.html";
 
     /**
@@ -46,7 +46,7 @@ public class LoginServlet extends HttpServlet {
             AccountDTO dto = dao.checkLogin(email, password);
             if (dto != null) {
                 if (dto.getStatus() != 2) {
-                    url = SEARCH_HOTEL;
+                    url = MEMBER_SEARCH_HOTEL;
                     HttpSession session = request.getSession();
                     session.setAttribute("ACCOUNT", dto);
                 }

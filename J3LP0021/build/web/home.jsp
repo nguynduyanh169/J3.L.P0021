@@ -32,7 +32,7 @@
                     <tbody>
                         <tr>
                             <td>Hotel Name: </td>
-                            <td><input type="text" name="txtSearchName" value="${param.txtSearchName}"/></td>
+                            <td><input type="hidden" name="forwardTo" value="guest"/><input type="text" name="txtSearchName" value="${param.txtSearchName}"/></td>
                         </tr>
                         <tr>
                             <td>Area: </td>
@@ -87,6 +87,7 @@
                                         <c:param name="selectQuantity" value="${param.txtAmount}"/>
                                         <c:param name="checkIn" value="${param.txtCheckIn}"/>
                                         <c:param name="checkOut" value="${param.txtCheckOut}"/>
+                                        <c:param name="forwardTo" value="guest"/>
                                         <c:param name="btAction" value="Get Rooms"/>
                                     </c:url>
                                     <a href="${viewRoomsLink}">View Rooms</a>

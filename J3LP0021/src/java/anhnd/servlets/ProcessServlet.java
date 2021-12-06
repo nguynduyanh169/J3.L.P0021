@@ -21,7 +21,7 @@ public class ProcessServlet extends HttpServlet {
 
     private static final String HOME_PAGE = "home.jsp";
     private static final String LOAD_HOME = "LoadHomeServlet";
-    private static final String CART = "CartServlet";
+    private static final String BOOKING = "BookingServlet";
     private static final String REGISTER = "RegisterServlet";
     private static final String EDIT_CAKE = "EditCakeServlet";
     private static final String GET_ROOMS = "GetRoomsServlet";
@@ -67,25 +67,9 @@ public class ProcessServlet extends HttpServlet {
                 url = SEARCH_HOTEL;
             } else if (button.equals("GoogleLogin")) {
                 url = LOGIN_GOOGLE;
-            } else if (button.equals("Remove_Cart")) {
-                url = CART;
-            } else if (button.equals("Guest_Order")) {
-                url = CART;
-            } else if (button.equals("Guest_View_Cart")) {
-                url = CART;
-            } else if (button.equals("Guest_Add_To_Cart")) {
-                url = CART;
-            } else if (button.equals("Add_To_Cart")) {
-                url = CART;
-            } else if (button.equals("Update_Cart")) {
-                url = CART;
-            } else if (button.equals("View_Cart")) {
-                url = CART;
-            } else if (button.equals("Confirm_Order")) {
-                url = CART;
-            } else if (button.equals("Order")) {
-                url = CART;
-            }
+            } else if (button.equals("Add to cart")) {
+                url = BOOKING;
+            } 
 
         } finally {
             RequestDispatcher rd = request.getRequestDispatcher(url);

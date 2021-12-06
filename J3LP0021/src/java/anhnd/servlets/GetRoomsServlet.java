@@ -32,6 +32,7 @@ import javax.servlet.http.HttpSession;
 public class GetRoomsServlet extends HttpServlet {
 
     private static final String VIEW_ROOM_PAGE = "guest_view_room.jsp";
+    private static final String MEMBER_VIEW_ROOM_PAGE = "member_view_room.jsp";
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -50,6 +51,11 @@ public class GetRoomsServlet extends HttpServlet {
         String selectQuantity = request.getParameter("selectQuantity");
         String checkIn = request.getParameter("checkIn");
         String checkOut = request.getParameter("checkOut");
+        String forwardTo = request.getParameter("forwardTo");
+        String url = VIEW_ROOM_PAGE;
+        if(forwardTo.equals("member")){
+            url = MEMBER_VIEW_ROOM_PAGE;
+        }
         try {
             HttpSession session = request.getSession();
             HotelDAO hotelDAO = new HotelDAO();
@@ -71,10 +77,12 @@ public class GetRoomsServlet extends HttpServlet {
             HotelDTO selectedHotel = hotelDAO.GetHotelById(hotelId);
             session.setAttribute("HOTEL", selectedHotel);
             session.setAttribute("HOTELROOMS", availableRooms);
+            session.setAttribute("CHECKIN", checkIn);
+            session.setAttribute("CHECKOUT", checkOut);
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            RequestDispatcher rd = request.getRequestDispatcher(VIEW_ROOM_PAGE);
+            RequestDispatcher rd = request.getRequestDispatcher(url);
             rd.forward(request, response);
             out.close();
         }

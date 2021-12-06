@@ -23,7 +23,7 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class RegisterServlet extends HttpServlet {
 
-    private static final String LOGIN_PAGE = "login.html";
+    private static final String LOGIN_PAGE = "login.jsp";
     private static final String REGISTER_PAGE = "register.jsp";
     public static final Pattern VALID_EMAIL_ADDRESS_REGEX
             = Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
