@@ -5,6 +5,7 @@
  */
 package anhnd.daos;
 
+import anhnd.dtos.BookingDetailDTO;
 import anhnd.utils.DBUtils;
 import java.sql.Connection;
 import java.sql.Date;
@@ -54,6 +55,38 @@ public class BookingDetailDAO {
             }
         }
         return result;
+    }
+
+    public boolean insertBookingDetail(BookingDetailDTO bookingDetailDTO) throws NamingException, SQLException {
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        boolean check = false;
+        try {
+            connection = DBUtils.makeConnection();
+            String sql = "Insert into BookingDetail(bookingDetailId, bookingId, hotelRoomId, price, quantity, startDate, endDate, status) values(?,?,?,?,?,?,?,?)";
+            preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setString(1, bookingDetailDTO.getBookingDetailId());
+            preparedStatement.setString(2, bookingDetailDTO.getBookingId());
+            preparedStatement.setString(3, bookingDetailDTO.getHotelRoomId());
+            preparedStatement.setFloat(4, bookingDetailDTO.getPrice());
+            preparedStatement.setInt(5, bookingDetailDTO.getQuantity());
+            preparedStatement.setDate(6, bookingDetailDTO.getStartDate());
+            preparedStatement.setDate(7, bookingDetailDTO.getEndDate());
+            preparedStatement.setInt(8, bookingDetailDTO.getStatus());
+            int row = preparedStatement.executeUpdate();
+            if (row > 0) {
+                check = true;
+            }
+        } finally {
+
+            if (preparedStatement != null) {
+                preparedStatement.close();
+            }
+            if (connection != null) {
+                connection.close();
+            }
+        }
+        return check;
     }
 
 }

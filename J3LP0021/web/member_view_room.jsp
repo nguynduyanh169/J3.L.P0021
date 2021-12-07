@@ -21,31 +21,40 @@
         </style>
     </head>
     <body>
-         <c:set var="hotelRooms" value="${sessionScope.HOTELROOMS}" />
-          <c:set var="hotel" value="${sessionScope.HOTEL}" />
-          <c:set var="checkIn" value="${sessionScope.CHECKIN}" />
-          <c:set var="checkOut" value="${sessionScope.CHECKOUT}" />
-          <div class="container">
-              <h1>View Available Rooms of <c:out value="${hotel.hotelName}"/> from ${checkIn} to ${checkOut}!</h1>
-              <br/>
-              <table border="0">
-                  <tbody>
-                      <tr>
-                          <td>Name: </td>
-                          <td>${hotel.hotelName}</td>
-                      </tr>
-                      <tr>
-                          <td>Address: </td>
-                          <td>${hotel.address}</td>
-                      </tr>
-                      <tr>
-                          <td>Phone: </td>
-                          <td>${hotel.phone}</td>
-                      </tr>
-                  </tbody>
-              </table>
-              <br/>
-              <c:if test="${not empty hotelRooms}">
+        <c:set var="hotelRooms" value="${sessionScope.HOTELROOMS}" />
+        <c:set var="hotel" value="${sessionScope.HOTEL}" />
+        <c:set var="checkIn" value="${sessionScope.CHECKIN}" />
+        <c:set var="checkOut" value="${sessionScope.CHECKOUT}" />
+        <div class="container">
+            <h1>View Available Rooms of <c:out value="${hotel.hotelName}"/> from ${checkIn} to ${checkOut}!</h1>
+            <br/>
+            <table border="0">
+                <tbody>
+                    <tr>
+                        <td>Name: </td>
+                        <td>${hotel.hotelName}</td>
+                    </tr>
+                    <tr>
+                        <td>Address: </td>
+                        <td>${hotel.address}</td>
+                    </tr>
+                    <tr>
+                        <td>Phone: </td>
+                        <td>${hotel.phone}</td>
+                    </tr>
+                    <tr>
+                        <td>View your cart </td>
+                        <td>
+                            <c:url var="viewCartLink" value="ProcessServlet">
+                                <c:param name="btAction" value="View cart"/>
+                            </c:url>
+                            <a href="${viewCartLink}">View</a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <br/>
+            <c:if test="${not empty hotelRooms}">
                 <table border="1">
                     <thead>
                         <tr>
@@ -69,11 +78,14 @@
                                         <c:param name="roomId" value="${room.hotelRoomDTO.hotelRoomId}"/>
                                         <c:param name="availableQuantity" value="${room.actualQuantity}"/>
                                         <c:param name="price" value="${room.hotelRoomDTO.currentPrice}"/>
+                                        <c:param name="hotelName" value="${hotel.hotelName}"/>
+                                        <c:param name="description" value="${room.hotelRoomDTO.description}"/>
+                                        <c:param name="roomTypeName" value="${room.roomTypeDTO.roomTypeName}"/>
                                         <c:param name="checkIn" value="${checkIn}"/>
                                         <c:param name="checkOut" value="${checkOut}"/>
                                         <c:param name="btAction" value="Add to cart"/>
                                     </c:url>
-                                     <a href="${addToCartLink}">Book</a>
+                                    <a href="${addToCartLink}">Book</a>
                                 </td>
                             </tr>
                         </tbody>
@@ -83,6 +95,6 @@
             <c:if test="${empty hotelRooms}">
                 <h1>No record is matched !!!</h1>
             </c:if>
-          </div>      
+        </div>      
     </body>
 </html>

@@ -3,16 +3,21 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package anhnd.daos;
+package anhnd.dtos;
 
+import java.io.Serializable;
 import java.sql.Date;
 
 /**
  *
  * @author anhnd
  */
-public class BookingModel {
+public class BookingModel implements Serializable{
+
+    private String hotelName;
     private String roomId;
+    private String description;
+    private String roomTypeName;
     private int roomAvailableQuantity;
     private int roomQuantity;
     private float price;
@@ -20,7 +25,8 @@ public class BookingModel {
     private Date checkIn;
     private Date checkOut;
 
-    public BookingModel(String roomId, int roomAvailableQuantity, float price, float bookingPrice, Date checkIn, Date checkOut) {
+    public BookingModel(String hotelName, String roomId, String description, String roomTypeName, int roomAvailableQuantity, float price, float bookingPrice, Date checkIn, Date checkOut) {
+        this.hotelName = hotelName;
         this.roomId = roomId;
         this.roomAvailableQuantity = roomAvailableQuantity;
         this.roomQuantity = 1;
@@ -28,6 +34,32 @@ public class BookingModel {
         this.bookingPrice = bookingPrice;
         this.checkIn = checkIn;
         this.checkOut = checkOut;
+        this.description = description;
+        this.roomTypeName = roomTypeName;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getRoomTypeName() {
+        return roomTypeName;
+    }
+
+    public void setRoomTypeName(String roomTypeName) {
+        this.roomTypeName = roomTypeName;
+    }
+
+    public String getHotelName() {
+        return hotelName;
+    }
+
+    public void setHotelName(String hotelName) {
+        this.hotelName = hotelName;
     }
 
     public String getRoomId() {
@@ -90,7 +122,5 @@ public class BookingModel {
     public String toString() {
         return "BookingModel{" + "roomId=" + roomId + ", roomAvailableQuantity=" + roomAvailableQuantity + ", roomQuantity=" + roomQuantity + ", price=" + price + ", bookingPrice=" + bookingPrice + ", checkIn=" + checkIn + ", checkOut=" + checkOut + '}';
     }
-    
-    
-    
+
 }

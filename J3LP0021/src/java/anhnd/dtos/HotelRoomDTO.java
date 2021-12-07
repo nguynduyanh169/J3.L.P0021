@@ -5,11 +5,13 @@
  */
 package anhnd.dtos;
 
+import java.io.Serializable;
+
 /**
  *
  * @author anhnd
  */
-public class HotelRoomDTO {
+public class HotelRoomDTO implements Serializable{
     private String hotelRoomId;
     private String hotelId;
     private String roomTypeId;

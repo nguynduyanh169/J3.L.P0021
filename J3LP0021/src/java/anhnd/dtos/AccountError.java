@@ -5,11 +5,13 @@
  */
 package anhnd.dtos;
 
+import java.io.Serializable;
+
 /**
  *
  * @author anhnd
  */
-public class AccountError {
+public class AccountError implements Serializable{
     private String emailError;
     private String passwordError;
     private String fullNameError;

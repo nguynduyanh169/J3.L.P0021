@@ -15,6 +15,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import org.apache.log4j.Logger;
 
 /**
  *
@@ -24,6 +25,7 @@ public class LoginServlet extends HttpServlet {
 
     private static final String MEMBER_SEARCH_HOTEL = "member_home.jsp";
     private static final String INVALID_PAGE = "invalid.html";
+    private static Logger LOG = Logger.getLogger(LoginServlet.class.getName());
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -42,6 +44,7 @@ public class LoginServlet extends HttpServlet {
         String email = request.getParameter("txtEmail");
         String password = request.getParameter("txtPassword");
         try {
+            LOG.debug("TEST LOG");
             AccountDAO dao = new AccountDAO();
             AccountDTO dto = dao.checkLogin(email, password);
             if (dto != null) {

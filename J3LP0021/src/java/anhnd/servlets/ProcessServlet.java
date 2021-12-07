@@ -69,7 +69,19 @@ public class ProcessServlet extends HttpServlet {
                 url = LOGIN_GOOGLE;
             } else if (button.equals("Add to cart")) {
                 url = BOOKING;
-            } 
+            } else if (button.equals("View cart")) {
+                url = BOOKING;
+            } else if (button.equals("Remove cart")) {
+                url = BOOKING;
+            } else if (button.equals("Update cart")) {
+                url = BOOKING;
+            }else if (button.equals("Book")) {
+                url = BOOKING;
+            }else if (button.equals("Skip discount")) {
+                url = BOOKING;
+            }else if (button.equals("Discount")) {
+                url = BOOKING;
+            }
 
         } finally {
             RequestDispatcher rd = request.getRequestDispatcher(url);

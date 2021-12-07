@@ -3,6 +3,7 @@ package anhnd.utils;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.UUID;
 import javax.xml.bind.DatatypeConverter;
 
 /*
@@ -22,6 +23,11 @@ public class TextUtils {
         String sha256 = DatatypeConverter.printHexBinary(digest).toLowerCase();
         return sha256;
     }
+    
+     public static String getUUID() {
+        return UUID.randomUUID().toString();
+    }
+    
     
 }
 
