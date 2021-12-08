@@ -11,19 +11,18 @@ import java.io.Serializable;
  *
  * @author anhnd
  */
-public class RoomView implements Serializable{
+public class RoomView implements Serializable {
+
     private HotelRoomDTO hotelRoomDTO;
     private int actualQuantity;
     private RoomTypeDTO roomTypeDTO;
-    
+
     public RoomView(HotelRoomDTO hotelRoomDTO, int actualQuantity, RoomTypeDTO roomTypeDTO) {
         this.hotelRoomDTO = hotelRoomDTO;
         this.actualQuantity = actualQuantity;
         this.roomTypeDTO = roomTypeDTO;
-}
+    }
 
-    
-    
     public HotelRoomDTO getHotelRoomDTO() {
         return hotelRoomDTO;
     }
@@ -47,6 +46,5 @@ public class RoomView implements Serializable{
     public void setRoomTypeDTO(RoomTypeDTO roomTypeDTO) {
         this.roomTypeDTO = roomTypeDTO;
     }
-    
-    
+
 }

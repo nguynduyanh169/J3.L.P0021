@@ -1,12 +1,11 @@
-package anhnd.servlets;
-
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-import anhnd.daos.AccountDAO;
-import anhnd.dtos.AccountDTO;
+package anhnd.servlets;
+
+import anhnd.beans.BookingBean;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.RequestDispatcher;
@@ -15,17 +14,17 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import org.apache.log4j.Logger;
 
 /**
  *
  * @author anhnd
  */
-public class LoginServlet extends HttpServlet {
+public class BackToHomeServlet extends HttpServlet {
 
     private static final String MEMBER_SEARCH_HOTEL = "member_home.jsp";
-    private static final String INVALID_PAGE = "invalid.html";
-    private static Logger LOG = Logger.getLogger(LoginServlet.class.getName());
+    private static final String MEMBER_VIEW_ROOM = "member_view_room.jsp";
+    private static final String GUEST_SEARCH_HOTEL = "home.jsp";
+    private static final String MANAGE_BOOKING = "manage_booking.jsp";
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -40,24 +39,41 @@ public class LoginServlet extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
-        String url = INVALID_PAGE;
-        String email = request.getParameter("txtEmail");
-        String password = request.getParameter("txtPassword");
+        String action = request.getParameter("btAction");
         try {
-            AccountDAO dao = new AccountDAO();
-            AccountDTO dto = dao.checkLogin(email, password);
-            if (dto != null) {
-                if (dto.getStatus() != 2) {
-                    url = MEMBER_SEARCH_HOTEL;
-                    HttpSession session = request.getSession();
-                    session.setAttribute("ACCOUNT", dto);
+            if (action.equals("Guest Back Home")) {
+                String url = GUEST_SEARCH_HOTEL;
+                RequestDispatcher rd = request.getRequestDispatcher(url);
+                rd.forward(request, response);
+            } else if (action.equals("Member Back Home")) {
+                HttpSession session = request.getSession(true);
+                BookingBean shop = (BookingBean) session.getAttribute("SHOP");
+                String hotelName = (String) session.getAttribute("BOOKEDHOTEL");
+                if (shop != null) {
+                    session.removeAttribute("SHOP");
                 }
+                if (hotelName != null) {
+                    session.removeAttribute("BOOKEDHOTEL");
+                }
+                String url = MEMBER_SEARCH_HOTEL;
+                RequestDispatcher rd = request.getRequestDispatcher(url);
+                rd.forward(request, response);
+            } else if (action.equals("Cart Back View Room")) {
+                String url = MEMBER_VIEW_ROOM;
+                RequestDispatcher rd = request.getRequestDispatcher(url);
+                rd.forward(request, response);
+            } else if(action.equals("View Booking Back Home")){
+                String url = MEMBER_SEARCH_HOTEL;
+                RequestDispatcher rd = request.getRequestDispatcher(url);
+                rd.forward(request, response);
+            } else if(action.equals("Back To Manage Booking")){
+                String url = MANAGE_BOOKING;
+                RequestDispatcher rd = request.getRequestDispatcher(url);
+                rd.forward(request, response);
             }
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            RequestDispatcher rd = request.getRequestDispatcher(url);
-            rd.forward(request, response);
             out.close();
         }
     }

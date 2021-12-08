@@ -24,9 +24,8 @@ public class HotelRoomDAO {
 
     public HotelRoomDAO() {
     }
-    
-    
-    public List<HotelRoomDTO> getHotelRooms(String hotelId, int selectQuantity) throws SQLException, NamingException{
+
+    public List<HotelRoomDTO> getHotelRooms(String hotelId, int selectQuantity) throws SQLException, NamingException {
         Connection connection = null;
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
@@ -40,7 +39,7 @@ public class HotelRoomDAO {
             preparedStatement.setInt(2, selectQuantity);
             resultSet = preparedStatement.executeQuery();
             result = new ArrayList<>();
-            while (resultSet.next()) {                
+            while (resultSet.next()) {
                 String hotelRoomId = resultSet.getString("hotelRoomId");
                 String roomTypeId = resultSet.getString("roomTypeId");
                 float currentPrice = resultSet.getFloat("currentPrice");
@@ -61,7 +60,39 @@ public class HotelRoomDAO {
             }
         }
         return result;
-        
+    }
+
+    public HotelRoomDTO getHotelRoomById(String hotelRoomId) throws SQLException, NamingException {
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+        HotelRoomDTO hotelRoomDTO = null;
+        try {
+            connection = DBUtils.makeConnection();
+            String sql = "Select hotelId, roomTypeId, description, quantity, currentPrice from HotelRoom where hotelRoomId = ?";
+            preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setString(1, hotelRoomId);
+            resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                String hotelId = resultSet.getString("hotelId");
+                String roomTypeId = resultSet.getString("roomTypeId");
+                float currentPrice = resultSet.getFloat("currentPrice");
+                String description = resultSet.getString("description");
+                int quantity = resultSet.getInt("quantity");
+                hotelRoomDTO = new HotelRoomDTO(hotelRoomId, hotelId, roomTypeId, description, quantity, currentPrice);
+            }
+        } finally {
+            if (resultSet != null) {
+                resultSet.close();
+            }
+            if (preparedStatement != null) {
+                preparedStatement.close();
+            }
+            if (connection != null) {
+                connection.close();
+            }
+        }
+        return hotelRoomDTO;
     }
 
 }

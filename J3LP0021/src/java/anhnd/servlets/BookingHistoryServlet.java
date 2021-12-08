@@ -7,11 +7,18 @@ package anhnd.servlets;
 
 import anhnd.daos.BookingDAO;
 import anhnd.daos.BookingDetailDAO;
+import anhnd.daos.HotelRoomDAO;
 import anhnd.dtos.AccountDTO;
 import anhnd.dtos.BookingDTO;
+import anhnd.dtos.BookingDetailDTO;
+import anhnd.dtos.BookingDetailView;
+import anhnd.dtos.HotelRoomDTO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Date;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -27,6 +34,7 @@ import javax.servlet.http.HttpSession;
 public class BookingHistoryServlet extends HttpServlet {
 
     private static final String BOOKING_HISTORY = "manage_booking.jsp";
+    private static final String BOOKING_HISTORY_DETAIL = "booking_detail.jsp";
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -72,16 +80,45 @@ public class BookingHistoryServlet extends HttpServlet {
                         session.setAttribute("BOOKINGHISTORY", result);
                     }
                 }
-            }else if(action.equals("Cancel booking")){
+            } else if (action.equals("Cancel booking")) {
                 String bookingId = request.getParameter("txtBookingId");
-                BookingDAO bookingDAO = new BookingDAO();
-                BookingDetailDAO bookingDetailDAO = new BookingDetailDAO();
-                boolean check = bookingDAO.cancelBooking(bookingId);
-                if(check == true){
-                    bookingDetailDAO.disableBookingDetailsByBookingId(bookingId);
-                    url = "ProcessServlet?btAction=View+Booking";
+                String checkIn = request.getParameter("checkIn");
+                boolean isError = false;
+                String errorMsg = "";
+                Date currentDate = Date.valueOf(LocalDate.now());
+                if (Date.valueOf(checkIn).before(currentDate)) {
+                    isError = true;
+                    errorMsg = "Cannot delete because of this booking is being proccess";
                 }
-               
+                if (isError) {
+                    url = BOOKING_HISTORY;
+                    request.setAttribute("CANCELERROR", errorMsg);
+                } else {
+                    BookingDAO bookingDAO = new BookingDAO();
+                    BookingDetailDAO bookingDetailDAO = new BookingDetailDAO();
+                    boolean check = bookingDAO.cancelBooking(bookingId);
+                    if (check == true) {
+                        bookingDetailDAO.disableBookingDetailsByBookingId(bookingId);
+                        url = "ProcessServlet?btAction=View+Booking";
+                    }
+                }
+
+            } else if (action.equals("View booking detail")) {
+                String bookingId = request.getParameter("bookingId");
+                String hotelName = request.getParameter("hotelName");
+                BookingDetailDAO bookingDetailDAO = new BookingDetailDAO();
+                HotelRoomDAO hotelRoomDAO = new HotelRoomDAO();
+                List<BookingDetailDTO> bookingDetails = bookingDetailDAO.getBookingDetailByBookingId(bookingId);
+                List<BookingDetailView> bookingDetailViews = new ArrayList<>();
+                for (BookingDetailDTO bookingDetail : bookingDetails) {
+                    HotelRoomDTO hotelRoomDTO = hotelRoomDAO.getHotelRoomById(bookingDetail.getHotelRoomId());
+                    System.out.println(hotelRoomDTO.getDescription());
+                    BookingDetailView bookingDetailView = new BookingDetailView(bookingId, hotelName, bookingDetail, hotelRoomDTO);
+                    bookingDetailViews.add(bookingDetailView);
+                }
+                request.setAttribute("BOOKINGID", bookingId);
+                request.setAttribute("DETAILBOOK", bookingDetailViews);
+                url = BOOKING_HISTORY_DETAIL;
             }
         } catch (Exception e) {
             e.printStackTrace();

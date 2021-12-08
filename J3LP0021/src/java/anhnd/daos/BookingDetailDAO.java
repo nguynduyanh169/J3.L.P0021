@@ -12,6 +12,8 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import javax.naming.NamingException;
 
 /**
@@ -30,11 +32,13 @@ public class BookingDetailDAO {
         int result = totalRoomQuantity;
         try {
             connection = DBUtils.makeConnection();
-            String sql = "Select quantity from BookingDetail where hotelRoomId = ? and (startDate < ? or endDate > ?) and status = 0";
+            String sql = "Select quantity from BookingDetail where hotelRoomId = ? and ((startDate between ? and ?) or (endDate between ? and ?)) and status = 0";
             preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setString(1, roomId);
-            preparedStatement.setDate(2, endDate);
-            preparedStatement.setDate(3, startDate);
+            preparedStatement.setDate(2, startDate);
+            preparedStatement.setDate(3, endDate);
+            preparedStatement.setDate(4, startDate);
+            preparedStatement.setDate(5, endDate);
             resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
                 int quantity = resultSet.getInt("quantity");
@@ -54,8 +58,8 @@ public class BookingDetailDAO {
         }
         return result;
     }
-    
-    public boolean disableBookingDetailsByBookingId(String bookingId) throws SQLException, NamingException{
+
+    public boolean disableBookingDetailsByBookingId(String bookingId) throws SQLException, NamingException {
         Connection connection = null;
         PreparedStatement preparedStatement = null;
         boolean check = false;
@@ -65,7 +69,7 @@ public class BookingDetailDAO {
             preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setString(1, bookingId);
             int row = preparedStatement.executeUpdate();
-            if(row > 0){
+            if (row > 0) {
                 check = true;
             }
         } finally {
@@ -78,6 +82,45 @@ public class BookingDetailDAO {
             }
         }
         return check;
+    }
+
+    public List<BookingDetailDTO> getBookingDetailByBookingId(String bookingId) throws SQLException, NamingException {
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+        BookingDetailDTO bookingDetailDTO = null;
+        List<BookingDetailDTO> result = null;
+        try {
+            connection = DBUtils.makeConnection();
+            String sql = "Select bookingDetailId, bookingId, hotelRoomId, price, quantity, startDate, endDate, status from BookingDetail where bookingId = ?";
+            preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setString(1, bookingId);
+            resultSet = preparedStatement.executeQuery();
+            
+            result = new ArrayList<>();
+            while (resultSet.next()) {                
+                String bookingDetailId = resultSet.getString("bookingDetailId");
+                String hotelRoomId = resultSet.getString("hotelRoomId");
+                float price = resultSet.getFloat("price");
+                int quantity = resultSet.getInt("quantity");
+                Date startDate = resultSet.getDate("startDate");
+                Date endDate = resultSet.getDate("endDate");
+                int status = resultSet.getInt("status");
+                bookingDetailDTO = new BookingDetailDTO(bookingDetailId, bookingId, hotelRoomId, price, quantity, startDate, endDate, status);
+                result.add(bookingDetailDTO);
+            }
+        } finally {
+            if (resultSet != null) {
+                resultSet.close();
+            }
+            if (preparedStatement != null) {
+                preparedStatement.close();
+            }
+            if (connection != null) {
+                connection.close();
+            }
+        }
+        return result;
     }
 
     public boolean insertBookingDetail(BookingDetailDTO bookingDetailDTO) throws NamingException, SQLException {

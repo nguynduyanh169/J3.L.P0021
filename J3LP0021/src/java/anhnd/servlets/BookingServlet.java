@@ -179,8 +179,8 @@ public class BookingServlet extends HttpServlet {
                             }
                         }
                         session.removeAttribute("SHOP");
+                        session.removeAttribute("BOOKEDHOTEL");
                     }
-
                 }
                 RequestDispatcher rd = request.getRequestDispatcher(url);
                 rd.forward(request, response);

@@ -21,30 +21,34 @@
         </style>
     </head>
     <body>
-         <c:set var="hotelRooms" value="${sessionScope.HOTELROOMS}" />
-          <c:set var="hotel" value="${sessionScope.HOTEL}" />
-          <div class="container">
-              <h1>View Available Rooms of <c:out value="${hotel.hotelName}"/>!</h1>
-              <br/>
-              <table border="0">
-                  <tbody>
-                      <tr>
-                          <td>Name: </td>
-                          <td>${hotel.hotelName}</td>
-                      </tr>
-                      <tr>
-                          <td>Address: </td>
-                          <td>${hotel.address}</td>
-                      </tr>
-                      <tr>
-                          <td>Phone: </td>
-                          <td>${hotel.phone}</td>
-                      </tr>
-                  </tbody>
-              </table>
+        <c:set var="hotelRooms" value="${sessionScope.HOTELROOMS}" />
+        <c:set var="hotel" value="${sessionScope.HOTEL}" />
+        <c:url var="guestBackHomeLink" value="ProcessServlet">
+            <c:param name="btAction" value="Guest Back Home"/>
+        </c:url>
+        <a href="${guestBackHomeLink}">Back To Home</a>
+        <div class="container">
+            <h1>View Available Rooms of <c:out value="${hotel.hotelName}"/>!</h1>
+            <br/>
+            <table border="0">
+                <tbody>
+                    <tr>
+                        <td>Name: </td>
+                        <td>${hotel.hotelName}</td>
+                    </tr>
+                    <tr>
+                        <td>Address: </td>
+                        <td>${hotel.address}</td>
+                    </tr>
+                    <tr>
+                        <td>Phone: </td>
+                        <td>${hotel.phone}</td>
+                    </tr>
+                </tbody>
+            </table>
 
-              <br/>
-              <c:if test="${not empty hotelRooms}">
+            <br/>
+            <c:if test="${not empty hotelRooms}">
                 <table border="1">
                     <thead>
                         <tr>
@@ -70,8 +74,8 @@
             <c:if test="${empty hotelRooms}">
                 <h1>No record is matched !!!</h1>
             </c:if>
-          </div>
-        
-        
+        </div>
+
+
     </body>
 </html>

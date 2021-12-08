@@ -28,8 +28,10 @@ import javax.servlet.http.HttpSession;
  * @author anhnd
  */
 public class SearchHotelServlet extends HttpServlet {
- private static final String MEMBER_SEARCH_HOTEL = "member_home.jsp";
+
+    private static final String MEMBER_SEARCH_HOTEL = "member_home.jsp";
     private static final String GUEST_SEARCH_HOTEL = "home.jsp";
+
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -50,7 +52,7 @@ public class SearchHotelServlet extends HttpServlet {
         String selectQuantity = request.getParameter("txtAmount");
         String forwardTo = request.getParameter("forwardTo");
         String url = GUEST_SEARCH_HOTEL;
-        if(forwardTo.equals("member")){
+        if (forwardTo.equals("member")) {
             url = MEMBER_SEARCH_HOTEL;
         }
         try {

@@ -23,6 +23,11 @@
     <body>
         <c:set var="bookingHistory" value="${sessionScope.BOOKINGHISTORY}"/>
         <c:set var="error" value="${requestScope.ERROR}"/>
+        <c:set var="cancelError" value="${requestScope.CANCELERROR}"/>
+        <c:url var="backToMemberHomeLink" value="ProcessServlet">
+            <c:param name="btAction" value="View Booking Back Home"/>
+        </c:url>
+        <a href="${backToMemberHomeLink}">Back to home</a>
         <div class="container">
             <h1>Manage your booking</h1>
             <form action="ProcessServlet" method="POST">
@@ -60,6 +65,7 @@
                             <th>Total Price</th>
                             <th>Have to Pay</th>
                             <th></th>
+                            <th></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -76,8 +82,17 @@
                                 <td>
                                     <form action="ProcessServlet" method="POST">
                                         <input type="hidden" name="txtBookingId" value="${item.bookingId}"/>
+                                        <input type="hidden" name="checkIn" value="${item.startDate}"/>
                                         <input type="submit" name="btAction" value="Cancel booking"/>
                                     </form>
+                                </td>
+                                <td>
+                                    <c:url var="viewBookingDetailLink" value="ProcessServlet">
+                                        <c:param name="bookingId" value="${item.bookingId}"/>
+                                        <c:param name="hotelName" value="${item.hotelName}"/>
+                                        <c:param name="btAction" value="View booking detail"/>
+                                    </c:url>
+                                    <a href="${viewBookingDetailLink}">View Details</a>
                                 </td>
                             </tr>
                         </c:forEach>
@@ -87,7 +102,9 @@
             <c:if test="${empty bookingHistory}">
                 <h1>No record is matched !!!</h1>
             </c:if>
-
+            <p><font color="red">
+                ${cancelError}
+                </font></p>
         </div>
     </body>
 </html>

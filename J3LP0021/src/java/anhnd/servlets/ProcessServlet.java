@@ -30,7 +30,7 @@ public class ProcessServlet extends HttpServlet {
     private static final String LOGIN = "LoginServlet";
     private static final String LOGOUT = "LogoutServlet";
     private static final String SEARCH_HOTEL = "SearchHotelServlet";
-    private static final String UPDATE_CAKE = "UpdateCakeServlet";
+    private static final String BACK_TO_HOME = "BackToHomeServlet";
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -58,8 +58,14 @@ public class ProcessServlet extends HttpServlet {
                 url = REGISTER;
             } else if (button.equals("Edit Cake")) {
                 url = EDIT_CAKE;
-            } else if (button.equals("Update Cake")) {
-                url = UPDATE_CAKE;
+            } else if (button.equals("Guest Back Home")) {
+                url = BACK_TO_HOME;
+            }else if (button.equals("Member Back Home")) {
+                url = BACK_TO_HOME;
+            }else if (button.equals("Cart Back View Room")) {
+                url = BACK_TO_HOME;
+            }else if (button.equals("View Booking Back Home")) {
+                url = BACK_TO_HOME;
             } else if (button.equals("Get Rooms")) {
                 url = GET_ROOMS;
             } else if (button.equals("LoadHome")) {
@@ -88,6 +94,10 @@ public class ProcessServlet extends HttpServlet {
                 url = BOOKING_HISTORY;
             }else if (button.equals("Cancel booking")) {
                 url = BOOKING_HISTORY;
+            }else if (button.equals("View booking detail")) {
+                url = BOOKING_HISTORY;
+            }else if (button.equals("Back To Manage Booking")) {
+                url = BACK_TO_HOME;
             }
 
         } finally {

@@ -40,6 +40,10 @@
         <servlet-name>BookingHistoryServlet</servlet-name>
         <servlet-class>anhnd.servlets.BookingHistoryServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>BackToHomeServlet</servlet-name>
+        <servlet-class>anhnd.servlets.BackToHomeServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>LoginServlet</servlet-name>
         <url-pattern>/LoginServlet</url-pattern>
@@ -79,6 +83,10 @@
     <servlet-mapping>
         <servlet-name>BookingHistoryServlet</servlet-name>
         <url-pattern>/BookingHistoryServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>BackToHomeServlet</servlet-name>
+        <url-pattern>/BackToHomeServlet</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

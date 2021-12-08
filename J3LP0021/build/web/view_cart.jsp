@@ -31,6 +31,10 @@
         <c:set var="totalPrice" value="${requestScope.TOTALPRICE}" />
         <c:set var="error" value="${requestScope.ERROR}" />
         <h1>View Room Cart for ${checkIn} - ${checkOut}</h1>
+        <c:url var="backToViewRoomLink" value="ProcessServlet">
+            <c:param name="btAction" value="Cart Back View Room"/>
+        </c:url>
+        <a href="${backToViewRoomLink}">Continue to find room</a>
         <c:if test="${not empty shop}">
             <table border="1">
                 <thead>
@@ -68,7 +72,7 @@
                           </form>
                         </td>
                     </tr>
-                     <tr>
+                    <tr>
                         <td colspan="4">Total Price: </td>
                         <td>
                           ${totalPrice}

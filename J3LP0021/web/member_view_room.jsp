@@ -25,6 +25,10 @@
         <c:set var="hotel" value="${sessionScope.HOTEL}" />
         <c:set var="checkIn" value="${sessionScope.CHECKIN}" />
         <c:set var="checkOut" value="${sessionScope.CHECKOUT}" />
+        <c:url var="memberBackHomeLink" value="ProcessServlet">
+            <c:param name="btAction" value="Member Back Home"/>
+        </c:url>
+        <a href="${memberBackHomeLink}">Back To Home</a>
         <div class="container">
             <h1>View Available Rooms of <c:out value="${hotel.hotelName}"/> from ${checkIn} to ${checkOut}!</h1>
             <br/>
