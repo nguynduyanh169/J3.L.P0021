@@ -16,6 +16,7 @@ public class BookingDTO implements Serializable {
 
     private String bookingId;
     private String bookingBy;
+    private String hotelName;
     private Date startDate;
     private Date endDate;
     private Date createDate;
@@ -24,8 +25,9 @@ public class BookingDTO implements Serializable {
     private float totalPrice;
     private int status;
 
-    public BookingDTO(String bookingId, String bookingBy, Date startDate, Date endDate, Date createDate, int discount, float realTotalPrice, float totalPrice, int status) {
+    public BookingDTO(String bookingId, String hotelName, String bookingBy, Date startDate, Date endDate, Date createDate, int discount, float realTotalPrice, float totalPrice, int status) {
         this.bookingId = bookingId;
+        this.hotelName = hotelName;
         this.bookingBy = bookingBy;
         this.startDate = startDate;
         this.endDate = endDate;
@@ -108,6 +110,14 @@ public class BookingDTO implements Serializable {
 
     public void setRealTotalPrice(float realTotalPrice) {
         this.realTotalPrice = realTotalPrice;
+    }
+
+    public String getHotelName() {
+        return hotelName;
+    }
+
+    public void setHotelName(String hotelName) {
+        this.hotelName = hotelName;
     }
 
 }

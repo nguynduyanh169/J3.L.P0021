@@ -71,6 +71,7 @@ public class BookingServlet extends HttpServlet {
                 float price = Float.parseFloat(priceText);
                 BookingModel bookingModel = new BookingModel(hotelName, roomId, description, roomTypeName, Integer.parseInt(availableQuantity), price, price * CartUtils.getDifferenceDays(Date.valueOf(checkIn), Date.valueOf(checkOut)), Date.valueOf(checkIn), Date.valueOf(checkOut));
                 shop.addBooking(bookingModel);
+                session.setAttribute("BOOKEDHOTEL", hotelName);
                 session.setAttribute("SHOP", shop);
                 RequestDispatcher rd = request.getRequestDispatcher(url);
                 rd.forward(request, response);
@@ -82,7 +83,6 @@ public class BookingServlet extends HttpServlet {
                     if (shop != null) {
                         totalPrice = shop.caculateTotalPrice();
                     }
-
                 }
                 request.setAttribute("TOTALPRICE", totalPrice);
                 String url = VIEW_CART;
@@ -99,7 +99,6 @@ public class BookingServlet extends HttpServlet {
                             shop.removeBooking(roomId);
                             session.setAttribute("SHOP", shop);
                         }
-
                     }
                 }
                 RequestDispatcher rd = request.getRequestDispatcher(url);
@@ -127,8 +126,9 @@ public class BookingServlet extends HttpServlet {
                     BookingBean shop = (BookingBean) session.getAttribute("SHOP");
                     String checkIn = request.getParameter("checkIn");
                     String checkOut = request.getParameter("checkOut");
+                    String hotelName = (String) session.getAttribute("BOOKEDHOTEL");
                     if (shop != null) {
-                        BookingDTO bookingDTO = new BookingDTO(TextUtils.getUUID(), account.getEmail(), Date.valueOf(checkIn), Date.valueOf(checkOut), null, 0, shop.caculateTotalPrice(), shop.caculateTotalPrice(), 0);
+                        BookingDTO bookingDTO = new BookingDTO(TextUtils.getUUID(),hotelName, account.getEmail(), Date.valueOf(checkIn), Date.valueOf(checkOut), null, 0, shop.caculateTotalPrice(), shop.caculateTotalPrice(), 0);
                         boolean check = bookingDAO.insertBookingDetail(bookingDTO);
                         if (check == true) {
                             for (BookingModel bookingModel : shop.values()) {
@@ -156,6 +156,7 @@ public class BookingServlet extends HttpServlet {
                     String checkIn = request.getParameter("checkIn");
                     String checkOut = request.getParameter("checkOut");
                     String discountId = request.getParameter("txtCode");
+                    String hotelName = (String) session.getAttribute("BOOKEDHOTEL");
                     int discountPercent = discountDAO.checkDiscount(discountId, account.getEmail());
                     if (discountPercent == 0) {
                         checkDiscount = false;
@@ -167,7 +168,7 @@ public class BookingServlet extends HttpServlet {
                     } else {
                         if (shop != null) {
                             float discount = (float) discountPercent / 100;
-                            BookingDTO bookingDTO = new BookingDTO(TextUtils.getUUID(), account.getEmail(), Date.valueOf(checkIn), Date.valueOf(checkOut), null, discountPercent, shop.caculateTotalPrice(), shop.caculateTotalPrice() - (shop.caculateTotalPrice() * discount), 0);
+                            BookingDTO bookingDTO = new BookingDTO(TextUtils.getUUID(),hotelName, account.getEmail(), Date.valueOf(checkIn), Date.valueOf(checkOut), null, discountPercent, shop.caculateTotalPrice(), shop.caculateTotalPrice() - (shop.caculateTotalPrice() * discount), 0);
                             boolean check = bookingDAO.insertBookingDetail(bookingDTO);
                             if (check == true) {
                                 for (BookingModel bookingModel : shop.values()) {

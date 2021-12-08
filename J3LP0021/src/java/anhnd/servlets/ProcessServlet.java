@@ -22,6 +22,7 @@ public class ProcessServlet extends HttpServlet {
     private static final String HOME_PAGE = "home.jsp";
     private static final String LOAD_HOME = "LoadHomeServlet";
     private static final String BOOKING = "BookingServlet";
+    private static final String BOOKING_HISTORY = "BookingHistoryServlet";
     private static final String REGISTER = "RegisterServlet";
     private static final String EDIT_CAKE = "EditCakeServlet";
     private static final String GET_ROOMS = "GetRoomsServlet";
@@ -81,6 +82,12 @@ public class ProcessServlet extends HttpServlet {
                 url = BOOKING;
             }else if (button.equals("Discount")) {
                 url = BOOKING;
+            }else if (button.equals("View Booking")) {
+                url = BOOKING_HISTORY;
+            }else if (button.equals("Find booking")) {
+                url = BOOKING_HISTORY;
+            }else if (button.equals("Cancel booking")) {
+                url = BOOKING_HISTORY;
             }
 
         } finally {

@@ -12,8 +12,6 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
 import javax.naming.NamingException;
 
 /**
@@ -32,7 +30,7 @@ public class BookingDetailDAO {
         int result = totalRoomQuantity;
         try {
             connection = DBUtils.makeConnection();
-            String sql = "Select quantity from BookingDetail where hotelRoomId = ? and (startDate < ? or endDate > ?)";
+            String sql = "Select quantity from BookingDetail where hotelRoomId = ? and (startDate < ? or endDate > ?) and status = 0";
             preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setString(1, roomId);
             preparedStatement.setDate(2, endDate);
@@ -55,6 +53,31 @@ public class BookingDetailDAO {
             }
         }
         return result;
+    }
+    
+    public boolean disableBookingDetailsByBookingId(String bookingId) throws SQLException, NamingException{
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        boolean check = false;
+        try {
+            connection = DBUtils.makeConnection();
+            String sql = "Update BookingDetail set status = -1 where bookingId = ?";
+            preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setString(1, bookingId);
+            int row = preparedStatement.executeUpdate();
+            if(row > 0){
+                check = true;
+            }
+        } finally {
+
+            if (preparedStatement != null) {
+                preparedStatement.close();
+            }
+            if (connection != null) {
+                connection.close();
+            }
+        }
+        return check;
     }
 
     public boolean insertBookingDetail(BookingDetailDTO bookingDetailDTO) throws NamingException, SQLException {
