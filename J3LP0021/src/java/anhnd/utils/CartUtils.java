@@ -5,7 +5,6 @@
  */
 package anhnd.utils;
 
-import anhnd.beans.BookingBean;
 import anhnd.dtos.BookingModel;
 import java.sql.Date;
 import java.util.HashMap;
