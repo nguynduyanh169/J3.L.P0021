@@ -50,13 +50,13 @@ public class AccountDAO {
             }
         } finally {
             if (resultSet != null) {
-                preparedStatement.close();
+                resultSet.close();
             }
             if (preparedStatement != null) {
-                connection.close();
+                preparedStatement.close();
             }
             if (connection != null) {
-                resultSet.close();
+                connection.close();
             }
         }
         return accountDTO;
