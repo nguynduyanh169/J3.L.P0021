@@ -88,7 +88,7 @@ public class SearchHotelServlet extends HttpServlet {
                 }
             }
             if (!checkOut.isEmpty()) {
-                if (Date.valueOf(checkOut).before(Date.valueOf(checkIn))) {
+                if (Date.valueOf(checkOut).before(Date.valueOf(checkIn)) || Date.valueOf(checkOut).equals(Date.valueOf(checkIn))) {
                     isError = true;
                     error.setCheckoutError("Checkout date is not valid");
                 }
