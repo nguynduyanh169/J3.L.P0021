@@ -5,6 +5,7 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html>
     <head>
@@ -13,6 +14,10 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
     </head>
     <body>
+        <c:url var="guestBackHomeLink" value="ProcessServlet">
+            <c:param name="btAction" value="Guest Back Home"/>
+        </c:url>
+        <a href="${guestBackHomeLink}">Back To Home</a>
         <h1 style=" display: flex;justify-content: center;margin-bottom: 50px">Login To Booking Hotel</h1><br><br>
         <form action="ProcessServlet" method="POST">
             <table style=" display: flex;justify-content: center;margin-bottom: 50px" border="0">

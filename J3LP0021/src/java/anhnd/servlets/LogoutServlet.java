@@ -12,13 +12,17 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import org.apache.log4j.Logger;
 
 /**
  *
  * @author anhnd
  */
 public class LogoutServlet extends HttpServlet {
-private static final String GUEST_HOME = "home.jsp";
+
+    private static final String LOAD_HOME = "LoadHomeServlet";
+    private static Logger LOG = Logger.getLogger(LogoutServlet.class.getName());
+
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -33,15 +37,16 @@ private static final String GUEST_HOME = "home.jsp";
         response.setContentType("text/html;charset=UTF-8");
         response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
-        HttpSession session = request.getSession(false);
-        String url = GUEST_HOME;
+        HttpSession session = request.getSession();
+        String url = LOAD_HOME;
         try {
             if (session != null) {
                 session.invalidate();
             }
-        }catch(Exception e){
-            e.printStackTrace();
-        }finally {
+
+        } catch (Exception e) {
+            LOG.error("LogoutServlet_Exception: " + e.getMessage());
+        } finally {
             response.sendRedirect(url);
             out.close();
         }

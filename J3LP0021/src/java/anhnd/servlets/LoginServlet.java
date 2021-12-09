@@ -24,7 +24,7 @@ import org.apache.log4j.Logger;
 public class LoginServlet extends HttpServlet {
 
     private static final String MEMBER_SEARCH_HOTEL = "member_home.jsp";
-    private static final String INVALID_PAGE = "invalid.html";
+    private static final String INVALID_PAGE = "invalid.jsp";
     private static Logger LOG = Logger.getLogger(LoginServlet.class.getName());
 
     /**
@@ -47,14 +47,14 @@ public class LoginServlet extends HttpServlet {
             AccountDAO dao = new AccountDAO();
             AccountDTO dto = dao.checkLogin(email, password);
             if (dto != null) {
-                if (dto.getStatus() != 2) {
+                if (dto.getStatus() != -1) {
                     url = MEMBER_SEARCH_HOTEL;
                     HttpSession session = request.getSession();
                     session.setAttribute("ACCOUNT", dto);
                 }
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            LOG.error("LoginServlet_Exceiption: " + e.getMessage());
         } finally {
             RequestDispatcher rd = request.getRequestDispatcher(url);
             rd.forward(request, response);

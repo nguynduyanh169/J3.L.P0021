@@ -26,6 +26,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import org.apache.log4j.Logger;
 
 /**
  *
@@ -37,6 +38,7 @@ public class BookingServlet extends HttpServlet {
     private static final String VIEW_CART = "view_cart.jsp";
     private static final String DISCOUNT = "enter_discount.jsp";
     private static final String VIEW_BOOKING = "manage_booking.jsp";
+    private static Logger LOG = Logger.getLogger(BookingServlet.class.getName());
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -213,7 +215,7 @@ public class BookingServlet extends HttpServlet {
                 rd.forward(request, response);
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            LOG.error("BookingServlet_Exception: " + e.getMessage());
         } finally {
             out.close();
         }

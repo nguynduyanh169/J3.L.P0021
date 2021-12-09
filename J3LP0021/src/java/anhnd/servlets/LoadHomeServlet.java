@@ -16,6 +16,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import org.apache.log4j.Logger;
 
 /**
  *
@@ -23,6 +24,7 @@ import javax.servlet.http.HttpSession;
  */
 public class LoadHomeServlet extends HttpServlet {
     private static final String GUEST_HOME_PAGE = "home.jsp";
+    private static Logger LOG = Logger.getLogger(LoadHomeServlet.class.getName());
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -42,7 +44,7 @@ public class LoadHomeServlet extends HttpServlet {
             List<AreaDTO> areaList = areaDAO.getAllArea();
             session.setAttribute("AREAS", areaList);
         }catch (Exception e) {
-            e.printStackTrace();
+            LOG.error("LoadHomeServlet_Exception: " + e.getMessage());
         } finally {
             RequestDispatcher rd = request.getRequestDispatcher(GUEST_HOME_PAGE);
             rd.forward(request, response);

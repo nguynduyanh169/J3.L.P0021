@@ -17,6 +17,8 @@
         <c:set var="error" value="${requestScope.ERROR}"/>
         <h1>Enter your account!</h1>
         <br/>
+        <a href="login.jsp">go to login</a>
+        <br/>
         <c:if test="${not empty error}">
             <p><font color="red">
                 ${error}

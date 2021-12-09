@@ -26,6 +26,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import org.apache.log4j.Logger;
 
 /**
  *
@@ -35,6 +36,7 @@ public class BookingHistoryServlet extends HttpServlet {
 
     private static final String BOOKING_HISTORY = "manage_booking.jsp";
     private static final String BOOKING_HISTORY_DETAIL = "booking_detail.jsp";
+    private static Logger LOG = Logger.getLogger(BookingHistoryServlet.class.getName());
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -112,7 +114,6 @@ public class BookingHistoryServlet extends HttpServlet {
                 List<BookingDetailView> bookingDetailViews = new ArrayList<>();
                 for (BookingDetailDTO bookingDetail : bookingDetails) {
                     HotelRoomDTO hotelRoomDTO = hotelRoomDAO.getHotelRoomById(bookingDetail.getHotelRoomId());
-                    System.out.println(hotelRoomDTO.getDescription());
                     BookingDetailView bookingDetailView = new BookingDetailView(bookingId, hotelName, bookingDetail, hotelRoomDTO);
                     bookingDetailViews.add(bookingDetailView);
                 }
@@ -121,7 +122,7 @@ public class BookingHistoryServlet extends HttpServlet {
                 url = BOOKING_HISTORY_DETAIL;
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            LOG.error("BookingHistoryServlet_Exception: " + e.getMessage());
         } finally {
             RequestDispatcher rd = request.getRequestDispatcher(url);
             rd.forward(request, response);

@@ -16,6 +16,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.apache.log4j.Logger;
 
 /**
  *
@@ -29,6 +30,7 @@ public class RegisterServlet extends HttpServlet {
             = Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
     public static final Pattern VALID_PHONE_REGEX
             = Pattern.compile("^(0?)(3[2-9]|5[6|8|9]|7[0|6-9]|8[0-6|8|9]|9[0-4|6-9])[0-9]{7}$", Pattern.CASE_INSENSITIVE);
+    private static Logger LOG = Logger.getLogger(RegisterServlet.class.getName());
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -92,7 +94,7 @@ public class RegisterServlet extends HttpServlet {
                 request.setAttribute("ERROR", email + " is existed!");
                 url = REGISTER_PAGE;
             }
-            e.printStackTrace();
+            LOG.error("RegisterServlet_Exception: " + e.getMessage());
         } finally {
             RequestDispatcher rd = request.getRequestDispatcher(url);
             rd.forward(request, response);

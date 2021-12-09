@@ -24,45 +24,113 @@
         <a href="login.jsp">Go to login page</a>
         <c:set var="hotels" value="${sessionScope.HOTELS}" />
         <c:set var="areas" value="${sessionScope.AREAS}"/>
+        <c:set var="error" value="${requestScope.ERRORSEARCH}" />
+        <c:set var="errorMsg" value="${requestScope.ERRORMESSAGE}" />
+        <c:set var="selectArea" value="${sessionScope.SELECTAREA}" />
         <div class="container">
             <h1>Welcome Guest!</h1>
             <br/>
-            <form action="ProcessServlet" method="GET">
-                <table border="0">
-                    <tbody>
-                        <tr>
-                            <td>Hotel Name: </td>
-                            <td><input type="hidden" name="forwardTo" value="guest"/><input type="text" name="txtSearchName" value="${param.txtSearchName}"/></td>
-                        </tr>
-                        <tr>
-                            <td>Area: </td>
-                            <td><select name="areaChoice">
-                                    <c:forEach var="area" items="${areas}">
-                                    <option value="${area.areaId}">
-                                        <c:out value="${area.areaName}"/>
-                                    </option>
-                                    </c:forEach>
-                                </select></td>
-                        </tr>
-                        <tr>
-                            <td>Check in: </td>
-                            <td><input type="date" name="txtCheckIn" value="${param.txtCheckIn}"/></td>
-                        </tr>
-                        <tr>
-                            <td>Check out: </td>
-                            <td><input type="date" name="txtCheckOut" value="${param.txtCheckOut}"/></td>
-                        </tr>
-                        <tr>
-                            <td>Amount: </td>
-                            <td><input type="number" name="txtAmount" value="${param.txtAmount}"/></td>
-                        </tr>
-                        <tr>
-                            <td><input type="submit" name="btAction" value="Search Hotel"/></td>
-                            <td></td>
-                        </tr>
-                    </tbody>
-                </table>
-            </form>
+            <c:if test="${empty error}">
+                <form action="ProcessServlet" method="GET">
+                    <table border="0">
+                        <tbody>
+                            <tr>
+                                <td>Hotel Name: </td>
+                                <td><input type="hidden" name="forwardTo" value="guest"/><input type="text" name="txtSearchName" value="${param.txtSearchName}"/></td>
+                            </tr>
+                            <tr>
+                                <td>Area: </td>
+                                <td><select name="areaChoice">
+                                        <c:forEach var="area" items="${areas}">
+                                            <c:if test="${selectArea eq area.areaId}">
+                                                <option value="${area.areaId}" selected="true">
+                                                    <c:out value="${area.areaName}"/>
+                                                </option>
+                                            </c:if>
+                                            <c:if test="${selectArea eq area.areaId == false}">
+                                                <option value="${area.areaId}">
+                                                    <c:out value="${area.areaName}"/>
+                                                </option>
+                                            </c:if>
+                                        </c:forEach>
+                                    </select></td>
+                            </tr>
+                            <tr>
+                                <td>Check in: </td>
+                                <td><input type="date" name="txtCheckIn" value="${param.txtCheckIn}"/></td>
+                            </tr>
+                            <tr>
+                                <td>Check out: </td>
+                                <td><input type="date" name="txtCheckOut" value="${param.txtCheckOut}"/></td>
+                            </tr>
+                            <tr>
+                                <td>Amount: </td>
+                                <td><input type="number" name="txtAmount" value="${param.txtAmount}"/></td>
+                            </tr>
+                            <tr>
+                                <td><input type="submit" name="btAction" value="Search Hotel"/></td>
+                                <td></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </form>
+            </c:if>
+            <c:if test="${not empty error}">
+                <form action="ProcessServlet" method="GET">
+                    <table border="0">
+                        <tbody>
+                            <tr>
+                                <td>Hotel Name: </td>
+                                <td><input type="hidden" name="forwardTo" value="guest"/><input type="text" name="txtSearchName" value="${param.txtSearchName}"/></td>
+                            </tr>
+                            <tr>
+                                <td>Area: </td>
+                                <td><select name="areaChoice">
+                                        <c:forEach var="area" items="${areas}">
+                                            <option value="${area.areaId}">
+                                                <c:out value="${area.areaName}"/>
+                                            </option>
+                                        </c:forEach>
+                                    </select></td>
+                            </tr>
+                            <tr>
+                                <td>Check in: </td>
+                                <td><input type="date" name="txtCheckIn" value="${param.txtCheckIn}"/></td>
+                                    <c:if test="${not empty error.checkInError}">
+                                    <td><font color="red">
+                                        ${error.checkInError}
+                                        </font>
+                                    </td>
+                                </c:if>
+                            </tr>
+                            <tr>
+                                <td>Check out: </td>
+                                <td><input type="date" name="txtCheckOut" value="${param.txtCheckOut}"/></td>
+                                    <c:if test="${not empty error.checkoutError}">
+                                    <td><font color="red">
+                                        ${error.checkoutError}
+                                        </font>
+                                    </td>
+                                </c:if>
+                            </tr>
+                            <tr>
+                                <td>Amount: </td>
+                                <td><input type="number" name="txtAmount" value="${param.txtAmount}"/></td>
+                                    <c:if test="${not empty error.amountError}">
+                                    <td><font color="red">
+                                        ${error.amountError}
+                                        </font>
+                                    </td>
+                                </c:if>
+                            </tr>
+                            <tr>
+                                <td><input type="submit" name="btAction" value="Search Hotel"/></td>
+                                <td></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </form>
+            </c:if>
             <br/>
             <c:if test="${not empty hotels}">
                 <table border="1">
@@ -99,6 +167,12 @@
             </c:if>
             <c:if test="${empty hotels}">
                 <h1>No record is matched !!!</h1>
+            </c:if>
+            <c:if test="${not empty errorMsg}">
+                <p><font color="red">
+                    ${errorMsg}
+                    </font>
+                </p>
             </c:if>
         </div>
     </div>

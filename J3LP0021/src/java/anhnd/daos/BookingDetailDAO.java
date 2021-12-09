@@ -32,13 +32,14 @@ public class BookingDetailDAO {
         int result = totalRoomQuantity;
         try {
             connection = DBUtils.makeConnection();
-            String sql = "Select quantity from BookingDetail where hotelRoomId = ? and ((startDate between ? and ?) or (endDate between ? and ?)) and status = 0";
+            String sql = "Select quantity from BookingDetail where hotelRoomId = ? and ((startDate between ? and ?) or (endDate between ? and ?) or (? between  startDate and endDate)) and status = 0";
             preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setString(1, roomId);
             preparedStatement.setDate(2, startDate);
             preparedStatement.setDate(3, endDate);
             preparedStatement.setDate(4, startDate);
             preparedStatement.setDate(5, endDate);
+            preparedStatement.setDate(6, startDate);
             resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
                 int quantity = resultSet.getInt("quantity");

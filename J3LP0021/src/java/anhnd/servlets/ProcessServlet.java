@@ -24,9 +24,7 @@ public class ProcessServlet extends HttpServlet {
     private static final String BOOKING = "BookingServlet";
     private static final String BOOKING_HISTORY = "BookingHistoryServlet";
     private static final String REGISTER = "RegisterServlet";
-    private static final String EDIT_CAKE = "EditCakeServlet";
     private static final String GET_ROOMS = "GetRoomsServlet";
-    private static final String LOGIN_GOOGLE = "LoginGoogleServlet";
     private static final String LOGIN = "LoginServlet";
     private static final String LOGOUT = "LogoutServlet";
     private static final String SEARCH_HOTEL = "SearchHotelServlet";
@@ -56,15 +54,13 @@ public class ProcessServlet extends HttpServlet {
                 url = LOGOUT;
             } else if (button.equals("Register")) {
                 url = REGISTER;
-            } else if (button.equals("Edit Cake")) {
-                url = EDIT_CAKE;
             } else if (button.equals("Guest Back Home")) {
                 url = BACK_TO_HOME;
-            }else if (button.equals("Member Back Home")) {
+            } else if (button.equals("Member Back Home")) {
                 url = BACK_TO_HOME;
-            }else if (button.equals("Cart Back View Room")) {
+            } else if (button.equals("Cart Back View Room")) {
                 url = BACK_TO_HOME;
-            }else if (button.equals("View Booking Back Home")) {
+            } else if (button.equals("View Booking Back Home")) {
                 url = BACK_TO_HOME;
             } else if (button.equals("Get Rooms")) {
                 url = GET_ROOMS;
@@ -72,8 +68,6 @@ public class ProcessServlet extends HttpServlet {
                 url = LOAD_HOME;
             } else if (button.equals("Search Hotel")) {
                 url = SEARCH_HOTEL;
-            } else if (button.equals("GoogleLogin")) {
-                url = LOGIN_GOOGLE;
             } else if (button.equals("Add to cart")) {
                 url = BOOKING;
             } else if (button.equals("View cart")) {
@@ -82,21 +76,21 @@ public class ProcessServlet extends HttpServlet {
                 url = BOOKING;
             } else if (button.equals("Update cart")) {
                 url = BOOKING;
-            }else if (button.equals("Book")) {
+            } else if (button.equals("Book")) {
                 url = BOOKING;
-            }else if (button.equals("Skip discount")) {
+            } else if (button.equals("Skip discount")) {
                 url = BOOKING;
-            }else if (button.equals("Discount")) {
+            } else if (button.equals("Discount")) {
                 url = BOOKING;
-            }else if (button.equals("View Booking")) {
+            } else if (button.equals("View Booking")) {
                 url = BOOKING_HISTORY;
-            }else if (button.equals("Find booking")) {
+            } else if (button.equals("Find booking")) {
                 url = BOOKING_HISTORY;
-            }else if (button.equals("Cancel booking")) {
+            } else if (button.equals("Cancel booking")) {
                 url = BOOKING_HISTORY;
-            }else if (button.equals("View booking detail")) {
+            } else if (button.equals("View booking detail")) {
                 url = BOOKING_HISTORY;
-            }else if (button.equals("Back To Manage Booking")) {
+            } else if (button.equals("Back To Manage Booking")) {
                 url = BACK_TO_HOME;
             }
 

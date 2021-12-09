@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import org.apache.log4j.Logger;
 
 /**
  *
@@ -25,6 +26,7 @@ public class BackToHomeServlet extends HttpServlet {
     private static final String MEMBER_VIEW_ROOM = "member_view_room.jsp";
     private static final String GUEST_SEARCH_HOTEL = "home.jsp";
     private static final String MANAGE_BOOKING = "manage_booking.jsp";
+    private static Logger LOG = Logger.getLogger(BackToHomeServlet.class.getName());
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -46,19 +48,11 @@ public class BackToHomeServlet extends HttpServlet {
                 RequestDispatcher rd = request.getRequestDispatcher(url);
                 rd.forward(request, response);
             } else if (action.equals("Member Back Home")) {
-                HttpSession session = request.getSession(true);
-                BookingBean shop = (BookingBean) session.getAttribute("SHOP");
-                String hotelName = (String) session.getAttribute("BOOKEDHOTEL");
-                if (shop != null) {
-                    session.removeAttribute("SHOP");
-                }
-                if (hotelName != null) {
-                    session.removeAttribute("BOOKEDHOTEL");
-                }
                 String url = MEMBER_SEARCH_HOTEL;
                 RequestDispatcher rd = request.getRequestDispatcher(url);
                 rd.forward(request, response);
-            } else if (action.equals("Cart Back View Room")) {
+            } else
+                if (action.equals("Cart Back View Room")) {
                 String url = MEMBER_VIEW_ROOM;
                 RequestDispatcher rd = request.getRequestDispatcher(url);
                 rd.forward(request, response);
@@ -72,7 +66,7 @@ public class BackToHomeServlet extends HttpServlet {
                 rd.forward(request, response);
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            LOG.error("BackToHomeServlet_Exception: " + e.getMessage());
         } finally {
             out.close();
         }
